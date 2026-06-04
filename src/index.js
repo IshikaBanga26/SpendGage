@@ -7,6 +7,7 @@ import { testConnection } from './db/index.js';
 
 import authRoutes from './routes/auth.js';
 import ingredientRoutes from './routes/ingredients.js';
+import productRoutes from './routes/products.js';
 
 dotenv.config();
 
@@ -21,7 +22,7 @@ app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/ingredients', ingredientRoutes);
-
+app.use('/api/products', productRoutes);
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'SpendGage API is running' });
