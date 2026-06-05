@@ -8,6 +8,8 @@ import { testConnection } from './db/index.js';
 import authRoutes from './routes/auth.js';
 import ingredientRoutes from './routes/ingredients.js';
 import productRoutes from './routes/products.js';
+import receiptRoutes from './routes/receipts.js';
+import aiRoutes from './routes/ai.js';
 
 dotenv.config();
 
@@ -15,14 +17,30 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
 
 // Middleware
-app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' }));
-app.use(express.json());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+}));
+
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+
+// JSON parser only for non-multipart requests
+app.use((req, res, next) => {
+  const contentType = req.headers['content-type'] || '';
+  if (contentType.includes('multipart/form-data')) {
+    return next();
+  }
+  express.json()(req, res, next);
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/ingredients', ingredientRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/receipts', receiptRoutes);
+app.use('/api/ai', aiRoutes);
+
 // Health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'SpendGage API is running' });
@@ -38,7 +56,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-// Test DB connection then start server
 testConnection()
   .then(() => {
     app.listen(PORT, () => {
