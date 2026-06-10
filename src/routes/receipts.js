@@ -97,6 +97,19 @@ router.post('/upload', (req, res, next) => {
 
     const parsed = await parseReceiptWithAI(base64Image, mimeType);
 
+    if (process.env.N8N_RECEIPT_WEBHOOK) {
+      fetch(process.env.N8N_RECEIPT_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          user_email: req.user.email,
+          store_name: parsed.store_name || 'Unknown Store',
+          item_count: parsed.items.length,
+          receipt_id: receipt.id
+        })
+      }).catch(err => console.error('n8n webhook error:', err.message));
+    }
+
     await pool.query(
       `UPDATE receipts
        SET store_name = $1, purchase_date = $2, total_amount = $3,

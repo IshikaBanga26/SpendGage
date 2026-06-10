@@ -50,6 +50,17 @@ router.post('/register', async (req, res, next) => {
     }
     next(err);
   }
+
+  if (process.env.N8N_REGISTER_WEBHOOK) {
+    fetch(process.env.N8N_REGISTER_WEBHOOK, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: user.email,
+        business_name: user.business_name
+      })
+    }).catch(err => console.error('n8n onboarding webhook error:', err.message));
+  }
 });
 
 router.post('/login', async (req, res, next) => {

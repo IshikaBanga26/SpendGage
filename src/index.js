@@ -10,6 +10,7 @@ import ingredientRoutes from './routes/ingredients.js';
 import productRoutes from './routes/products.js';
 import receiptRoutes from './routes/receipts.js';
 import aiRoutes from './routes/ai.js';
+import internalRoutes from './routes/internal.js';
 
 dotenv.config();
 
@@ -40,6 +41,7 @@ app.use('/api/ingredients', ingredientRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/receipts', receiptRoutes);
 app.use('/api/ai', aiRoutes);
+app.use('/api/internal', internalRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
