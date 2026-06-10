@@ -72,3 +72,12 @@ FRONTEND_URL=http://localhost:5173
 | POST | /api/receipts/upload | Upload and parse receipt image |
 | POST | /api/receipts/:id/apply | Apply receipt costs to inventory |
 | GET | /api/ai/advice | Get AI pricing recommendations |
+
+## Automation (n8n)
+
+Four automated workflows built with n8n:
+
+- **Nightly margin alert** — runs at 11pm, emails users when product margins drop below threshold
+- **Receipt notification** — triggered via webhook after AI parsing, confirms receipt was processed
+- **Low stock alert** — runs at 9am, emails users when ingredients fall below stock threshold  
+- **User onboarding** — 3-email sequence triggered on registration (day 0, day 1, day 3)
