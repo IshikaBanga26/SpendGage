@@ -1,0 +1,66 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #F7F4EE;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
+  color: #1C1917;
+}
+
+/* Buttons */
+.btn-orange {
+  background: #D97234;
+  color: #fff;
+  transition: background 0.12s;
+}
+.btn-orange:hover { background: #d26116; }
+.btn-orange:disabled { opacity: 0.6; cursor: default; }
+
+.btn-green {
+  background: #1E6B45;
+  color: #fff;
+  transition: background 0.12s;
+}
+.btn-green:hover { background: #195b3b; }
+.btn-green:disabled { opacity: 0.6; cursor: default; }
+
+.btn-ghost {
+  background: transparent;
+  color: #6B6560;
+  border: 1px solid #E5DFD3;
+  transition: all 0.12s;
+}
+.btn-ghost:hover {
+  background: #EDE9E2;
+  color: #1C1917;
+  border-color: #1C1917;
+}
+
+.btn-ghost-red {
+  background: transparent;
+  color: #A83232;
+  border: 1px solid #E5DFD3;
+  transition: all 0.12s;
+}
+.btn-ghost-red:hover {
+  background: #F7E8E8;
+  border-color: #A83232;
+}
+
+/* Dashboard rows */
+.dash-row {
+  transition: background 0.12s, box-shadow 0.12s;
+}
+.dash-row:hover {
+  background: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(28,25,23,0.04);
+}
+
+.dash-link {
+  transition: gap 0.14s, color 0.14s;
+}
+.dash-link:hover {
+  color: #D46821;
+  gap: 6px;
+}
