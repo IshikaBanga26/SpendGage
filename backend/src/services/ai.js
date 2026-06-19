@@ -82,12 +82,12 @@ export async function getMarginAdvice(products, ingredients) {
   };
 
   const response = await client.chat.completions.create({
-    model: 'meta-llama/llama-4-scout-17b-16e-instruct',
-    max_tokens: 1024,
-    messages: [
-      {
-        role: 'user',
-        content: `You are a pricing advisor for indie creators and micro-business owners.
+  model: 'meta-llama/llama-4-scout-17b-16e-instruct',
+  max_tokens: 1024,
+  messages: [
+    {
+      role: 'user',
+      content: `You are a pricing advisor for indie creators and micro-business owners in India.
 
 Here is their current business data:
 ${JSON.stringify(context, null, 2)}
@@ -95,14 +95,19 @@ ${JSON.stringify(context, null, 2)}
 Give 3-5 specific actionable pricing recommendations. Focus on:
 1. Products with low or negative margins
 2. Which ingredients are driving costs up
-3. Suggested selling price adjustments
+3. Suggested selling price adjustments with specific rupee amounts
 4. Any bulk buying opportunities
 
-Be concise and practical. Reference actual product names and numbers from the data.
-Format as bullet points.`,
-      },
-    ],
-  });
+IMPORTANT RULES:
+- Always use ₹ (Indian Rupee symbol) for all prices, never use $ or USD
+- All amounts are in Indian Rupees (INR)
+- Reference actual product names and numbers from the data
+- Be concise and practical
+
+Format as bullet points starting with •`,
+    },
+  ],
+});
 
   return response.choices[0].message.content;
 }

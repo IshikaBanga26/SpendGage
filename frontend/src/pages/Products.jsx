@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import api from '../lib/api';
 
@@ -343,26 +344,45 @@ export default function Products() {
                 <p style={{ fontSize: '12px', color: '#A89F92' }}>Add ingredients first before building a recipe.</p>
               )}
 
-              {recipe.map((row, idx) => (
-                <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 120px 32px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
-                  <select style={inputStyle} value={row.ingredient_id}
-                    onChange={e => updateRecipeRow(idx, 'ingredient_id', e.target.value)}>
-                    <option value="">Select ingredient</option>
-                    {ingredients.map(ing => (
-                      <option key={ing.id} value={ing.id}>
-                        {ing.name} (₹{parseFloat(ing.current_unit_cost).toFixed(4)}/{ing.unit})
-                      </option>
-                    ))}
-                  </select>
-                  <input style={inputStyle} type="number" placeholder="Qty"
-                    value={row.quantity_used}
-                    onChange={e => updateRecipeRow(idx, 'quantity_used', e.target.value)} />
-                  <button onClick={() => removeRecipeRow(idx)}
-                    style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#A89F92', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <i className="ti ti-x" />
-                  </button>
-                </div>
-              ))}
+              {recipe.map((row, idx) => {
+                const selectedIng = ingredients.find(i => i.id === row.ingredient_id);
+                return (
+                  <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 140px 32px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
+                    <select style={inputStyle} value={row.ingredient_id}
+                      onChange={e => updateRecipeRow(idx, 'ingredient_id', e.target.value)}>
+                      <option value="">Select ingredient</option>
+                      {ingredients.map(ing => (
+                        <option key={ing.id} value={ing.id}>
+                          {ing.name} (₹{parseFloat(ing.current_unit_cost).toFixed(4)}/{ing.unit})
+                        </option>
+                      ))}
+                    </select>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        style={{ ...inputStyle, paddingRight: selectedIng ? '36px' : '12px' }}
+                        type="number"
+                        placeholder="Qty"
+                        value={row.quantity_used}
+                        onChange={e => updateRecipeRow(idx, 'quantity_used', e.target.value)}
+                      />
+                      {selectedIng && (
+                        <span style={{
+                          position: 'absolute', right: '10px', top: '50%',
+                          transform: 'translateY(-50%)',
+                          fontSize: '11px', fontWeight: 700, color: '#A89F92',
+                          pointerEvents: 'none',
+                        }}>
+                          {selectedIng.unit}
+                        </span>
+                      )}
+                    </div>
+                    <button onClick={() => removeRecipeRow(idx)}
+                      style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#A89F92', fontSize: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <i className="ti ti-x" />
+                    </button>
+                  </div>
+                );
+              })}
             </div>
 
             <div style={{ marginBottom: '14px' }}>
