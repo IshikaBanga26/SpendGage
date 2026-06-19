@@ -78,20 +78,29 @@ export default function Receipts() {
     const items = expandedData?.items || [];
     const applications = items
       .filter(item => matchMap[item.id])
-      .map(item => ({
-        receipt_item_id: item.id,
-        ingredient_id: matchMap[item.id],
-        unit_price: parseFloat(item.unit_price),
-      }));
+      .map(item => {
+        const matchValue = matchMap[item.id];
+        const isNew = matchValue.startsWith('new_');
+        return {
+          receipt_item_id: item.id,
+          ingredient_id: isNew ? null : matchValue,
+          is_new: isNew,
+          item_name: item.item_name,
+          unit: item.unit,
+          unit_price: parseFloat(item.unit_price),
+        };
+      });
 
     if (!applications.length) {
-      alert('Match at least one item to an ingredient before applying.');
+      alert('Match at least one item before applying.');
       return;
     }
 
     setApplyingId(receiptId);
     try {
-      await api.post(`/receipts/${receiptId}/apply`, { item_applications: applications });
+      await api.post(`/receipts/${receiptId}/apply`, {
+        item_applications: applications,
+      });
       await fetchAll();
       setExpandedId(null);
       setExpandedData(null);
@@ -190,7 +199,6 @@ export default function Receipts() {
       {/* Receipts list */}
       {receipts.map((r) => {
         const statusStyle = getStatusStyle(r.status);
-        const initials = getInitials(r.store_name);
         const isExpanded = expandedId === r.id;
 
         return (
@@ -205,7 +213,10 @@ export default function Receipts() {
                 background: '#fff', border: '1px solid #E5DFD3',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: '12px', fontWeight: 700, color: '#7A716A', flexShrink: 0,
-              }}>{initials}</div>
+              }}>{r.store_name
+                  ? getInitials(r.store_name)
+                  : <i className="ti ti-receipt" />
+                }</div>
 
               <div style={{ flex: 1 }}>
                 <div style={{ fontSize: '14.5px', fontWeight: 600, color: '#1C1917' }}>
@@ -265,6 +276,7 @@ export default function Receipts() {
                           onChange={e => setMatchMap(prev => ({ ...prev, [item.id]: e.target.value }))}
                         >
                           <option value="">Skip this item</option>
+                          <option value={`new_${item.id}`}>Add as new ingredient</option>
                           {ingredients.map(ing => (
                             <option key={ing.id} value={ing.id}>{ing.name}</option>
                           ))}

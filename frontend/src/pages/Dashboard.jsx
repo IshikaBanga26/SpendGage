@@ -202,8 +202,7 @@ export default function Dashboard() {
           <div style={{ height: '1px', background: '#E5DFD3' }} />
 
           {receipts.slice(0, 4).map(r => {
-            const statusStyle = getStatusStyle(r.status);
-            const initials = getInitials(r.store_name);
+            const statusStyle = getStatusStyle(r.status);            
             return (
               <div key={r.id}>
                 <div className="dash-row" style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px', borderRadius: '12px', cursor: 'pointer', margin: '0 -14px' }}
@@ -214,7 +213,10 @@ export default function Dashboard() {
                     background: '#fff', border: '1px solid #E5DFD3',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: '12px', fontWeight: 700, color: '#7A716A', flexShrink: 0,
-                  }}>{initials}</div>
+                  }}>{r.store_name
+                      ? getInitials(r.store_name)
+                      : <i className="ti ti-receipt" />
+                    }</div>
                   <div style={{ flex: 1 }}>
                     <div style={{ fontSize: '14.5px', fontWeight: 600, color: '#1C1917', letterSpacing: '-0.1px' }}>
                       {r.store_name || 'Unknown store'}

@@ -157,23 +157,44 @@ router.post('/:id/apply', async (req, res, next) => {
   try {
     const { item_applications } = req.body;
     for (const app of item_applications) {
-      // Update ingredient cost
-      await pool.query(
-        `UPDATE ingredients SET current_unit_cost = $1, updated_at = NOW()
-         WHERE id = $2 AND user_id = $3`,
-        [app.unit_price, app.ingredient_id, req.user.id]
-      );
+      let ingredientId = app.ingredient_id;
+
+      // Create new ingredient if needed
+      if (app.is_new) {
+        const { rows } = await pool.query(
+          `INSERT INTO ingredients (user_id, name, unit, current_unit_cost)
+           VALUES ($1, $2, $3, $4)
+           RETURNING id`,
+          [req.user.id, app.item_name, app.unit || 'piece', app.unit_price]
+        );
+        ingredientId = rows[0].id;
+
+        // Log to price history
+        await pool.query(
+          `INSERT INTO ingredient_price_history (ingredient_id, unit_cost, source)
+           VALUES ($1, $2, 'receipt')`,
+          [ingredientId, app.unit_price]
+        );
+      } else {
+        // Update existing ingredient
+        await pool.query(
+          `UPDATE ingredients SET current_unit_cost = $1, updated_at = NOW()
+           WHERE id = $2 AND user_id = $3`,
+          [app.unit_price, ingredientId, req.user.id]
+        );
+
+        await pool.query(
+          `INSERT INTO ingredient_price_history (ingredient_id, unit_cost, source)
+           VALUES ($1, $2, 'receipt')`,
+          [ingredientId, app.unit_price]
+        );
+      }
 
       await pool.query(
-        `INSERT INTO ingredient_price_history (ingredient_id, unit_cost, source)
-         VALUES ($1, $2, 'receipt')`,
-        [app.ingredient_id, app.unit_price]
-      );
-
-      await pool.query(
-        `UPDATE receipt_items SET is_applied = true
-         WHERE id = $1`,
-        [app.receipt_item_id]
+        `UPDATE receipt_items
+         SET is_applied = true, matched_ingredient_id = $1
+         WHERE id = $2`,
+        [ingredientId, app.receipt_item_id]
       );
     }
 

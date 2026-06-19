@@ -44,22 +44,23 @@ router.post('/register', async (req, res, next) => {
 
     const user = rows[0];
     res.status(201).json({ token: signToken(user), user });
-  } catch (err) {
-    if (err.code === '23505') {
-      return res.status(409).json({ error: 'Email already registered' });
-    }
-    next(err);
-  }
 
-  if (process.env.N8N_REGISTER_WEBHOOK) {
-    fetch(process.env.N8N_REGISTER_WEBHOOK, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: user.email,
-        business_name: user.business_name
+    console.log('Attempting n8n webhook:', process.env.N8N_REGISTER_WEBHOOK);
+
+    if (process.env.N8N_REGISTER_WEBHOOK) {
+      fetch(process.env.N8N_REGISTER_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: user.email,
+          business_name: user.business_name,
+        }),
       })
-    }).catch(err => console.error('n8n onboarding webhook error:', err.message));
+      .then(res => console.log('n8n webhook response:', res.status))
+      .catch(err => console.error('n8n onboarding webhook error:', err.message));
+    }
+  } catch (err) {
+    next(err);
   }
 });
 
