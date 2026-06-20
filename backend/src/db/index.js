@@ -5,8 +5,11 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const pool = new Pool({
+const pool = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: process.env.NODE_ENV === 'production'
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 export async function testConnection() {
