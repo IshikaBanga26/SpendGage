@@ -25,7 +25,7 @@ export default function AIAdvice() {
     return text
       .split('\n')
       .filter(line => line.trim())
-      .map(line => line.replace(/^[\*\-•]\s*/, '').trim())
+      .map(line => line.replace(/^[*\-•]\s*/, '').trim())
       .filter(line => line.length > 0);
   }
 
