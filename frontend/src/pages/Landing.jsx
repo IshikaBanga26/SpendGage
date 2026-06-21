@@ -171,7 +171,6 @@ export default function Landing() {
 
       {/* THE PROBLEM - visual stat panels */}
       <div className="landing-section" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 56px 88px' }}>
-        // eslint-disable-next-line react-hooks/static-components
         <SectionHeading>The problem</SectionHeading>
 
         <p style={{ fontSize: '15px', color: '#7A716A', lineHeight: 1.75, marginBottom: '36px', maxWidth: '640px' }}>
