@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/static-components */
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,10 +14,10 @@ export default function Landing() {
   );
 
   return (
-    <div style={{ background: '#F7F4EE', color: '#1C1917', minHeight: '100vh' }}>
+    <div style={{ background: '#F7F4EE', color: '#1C1917', minHeight: '100vh', overflowX: 'hidden' }}>
 
       {/* NAV */}
-      <div style={{
+      <div className="landing-nav" style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '24px 56px', maxWidth: '1100px', margin: '0 auto',
       }}>
@@ -50,7 +51,7 @@ export default function Landing() {
       </div>
 
       {/* HERO - two column */}
-      <div style={{
+      <div className="landing-hero" style={{
         maxWidth: '1100px', margin: '0 auto', padding: '32px 56px 80px',
         display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '56px', alignItems: 'center',
       }}>
@@ -64,7 +65,7 @@ export default function Landing() {
             Built for indie creators &amp; home bakers
           </div>
 
-          <h1 style={{
+          <h1 className="landing-h1" style={{
             fontSize: '42px', fontWeight: 800, letterSpacing: '-1.5px',
             lineHeight: 1.12,
           }}>
@@ -92,7 +93,7 @@ export default function Landing() {
         </div>
 
         {/* Right - screenshot with background shape */}
-        <div style={{ position: 'relative' }}>
+        <div className="landing-hero-visual" style={{ position: 'relative' }}>
           <div style={{
             position: 'absolute', top: '-28px', right: '-24px',
             width: '92%', height: '92%',
@@ -169,7 +170,8 @@ export default function Landing() {
       </div>
 
       {/* THE PROBLEM - visual stat panels */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 56px 88px' }}>
+      <div className="landing-section" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 56px 88px' }}>
+        // eslint-disable-next-line react-hooks/static-components
         <SectionHeading>The problem</SectionHeading>
 
         <p style={{ fontSize: '15px', color: '#7A716A', lineHeight: 1.75, marginBottom: '36px', maxWidth: '640px' }}>
@@ -178,26 +180,26 @@ export default function Landing() {
           disappear underneath them.
         </p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
+        <div className="landing-problem-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '24px' }}>
           <div style={{ background: '#FBEAEA', border: '1px solid #F3D4D4', borderRadius: '16px', padding: '28px' }}>
-            <div style={{ fontSize: '16px', fontWeight: 700, color: '#A83232', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#A83232', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
               Without tracking
             </div>
             <div style={{ fontSize: '46px', fontWeight: 800, color: '#A83232', letterSpacing: '-1.5px', lineHeight: 1 }}>11%</div>
             <div style={{ fontSize: '13px', color: '#B07070', marginTop: '4px', marginBottom: '16px' }}>margin, six months later</div>
-            <p style={{ fontSize: '15px', color: '#8a5a5a', lineHeight: 1.65 }}>
+            <p style={{ fontSize: '14px', color: '#8a5a5a', lineHeight: 1.65 }}>
               Butter quietly rose from ₹50 to ₹80 per 100g. The Chocolate Truffle Box
               still sold at ₹350 — barely covering costs, and nobody noticed.
             </p>
           </div>
 
           <div style={{ background: '#E8F5EE', border: '1px solid #CDE9DB', borderRadius: '16px', padding: '28px' }}>
-            <div style={{ fontSize: '16px', fontWeight: 700, color: '#1E6B45', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#1E6B45', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
               With SpendGage
             </div>
             <div style={{ fontSize: '46px', fontWeight: 800, color: '#1E6B45', letterSpacing: '-1.5px', lineHeight: 1 }}>25%</div>
             <div style={{ fontSize: '13px', color: '#6FA088', marginTop: '4px', marginBottom: '16px' }}>margin, maintained</div>
-            <p style={{ fontSize: '15px', color: '#4d7a64', lineHeight: 1.65 }}>
+            <p style={{ fontSize: '14px', color: '#4d7a64', lineHeight: 1.65 }}>
               The price change was scanned the same week butter went up. An email
               suggested raising the price to ₹420 — done in two minutes.
             </p>
@@ -205,8 +207,8 @@ export default function Landing() {
         </div>
       </div>
 
-      {/* HOW IT WORKS - with concrete previews */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 56px 88px' }}>
+      {/* HOW IT WORKS */}
+      <div className="landing-section" style={{ maxWidth: '1100px', margin: '0 auto', padding: '0 56px 88px' }}>
         <SectionHeading>How it works</SectionHeading>
 
         {[
@@ -228,7 +230,7 @@ export default function Landing() {
           },
         ].map((step, i) => (
           <div key={i} style={{
-            display: 'flex', gap: '32px', alignItems: 'center',
+            display: 'flex', gap: '32px', alignItems: 'flex-start',
             padding: '28px 0', borderTop: i > 0 ? '1px solid #E5DFD3' : 'none',
           }}>
             <div style={{ fontSize: '16px', fontWeight: 800, color: '#E8A87C', flexShrink: 0, width: '40px' }}>
@@ -236,17 +238,16 @@ export default function Landing() {
             </div>
             <div style={{ flex: 1, maxWidth: '480px' }}>
               <h3 style={{ fontSize: '18px', fontWeight: 700, marginBottom: '8px' }}>{step.title}</h3>
-              <p style={{ fontSize: '15px', color: '#7A716A', lineHeight: 1.7 }}>{step.desc}</p>
+              <p style={{ fontSize: '14px', color: '#7A716A', lineHeight: 1.7 }}>{step.desc}</p>
             </div>
-            {step.visual}
           </div>
         ))}
       </div>
 
       {/* CTA - centered */}
-      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 56px 100px', textAlign: 'center' }}>
+      <div style={{ maxWidth: '640px', margin: '0 auto', padding: '0 24px 100px', textAlign: 'center' }}>
         <div style={{ borderTop: '1px solid #E5DFD3', paddingTop: '56px' }}>
-          <h2 style={{ fontSize: '34px', fontWeight: 800, letterSpacing: '-0.8px', lineHeight: 1.25 }}>
+          <h2 style={{ fontSize: '30px', fontWeight: 800, letterSpacing: '-0.8px', lineHeight: 1.25 }}>
             Stop finding out about price changes <span style={{ color: '#D97234' }}>the hard way</span>.
           </h2>
           <p style={{ fontSize: '15px', color: '#7A716A', marginTop: '14px', lineHeight: 1.7 }}>
@@ -266,7 +267,7 @@ export default function Landing() {
 
       {/* FOOTER - centered */}
       <div style={{
-        maxWidth: '1100px', margin: '0 auto', padding: '28px 56px',
+        maxWidth: '1100px', margin: '0 auto', padding: '28px 24px',
         borderTop: '1px solid #E5DFD3', textAlign: 'center',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', marginBottom: '8px' }}>

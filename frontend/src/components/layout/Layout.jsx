@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 const navItems = [
@@ -10,6 +11,7 @@ const navItems = [
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   function handleLogout() {
@@ -23,7 +25,69 @@ export default function Layout({ children }) {
   return (
     <div style={{ display: 'flex', minHeight: '100vh', background: '#F7F4EE' }}>
 
-      <aside style={{
+      {/* MOBILE TOP BAR - only visible on small screens */}
+      <div className="mobile-topbar" style={{
+        display: 'none',
+        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 40,
+        background: '#1C1917', padding: '14px 16px',
+        alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
+          <div style={{
+            width: '28px', height: '28px', background: '#D97234', borderRadius: '50%',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: '#fff', fontSize: '15px',
+          }}>
+            <i className="ti ti-currency-dollar" />
+          </div>
+          <span style={{ fontSize: '15px', fontWeight: 700, color: '#F5F0E8' }}>SpendGage</span>
+        </div>
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          style={{ background: 'none', border: 'none', color: '#F5F0E8', fontSize: '22px', cursor: 'pointer' }}
+        >
+          <i className={mobileMenuOpen ? 'ti ti-x' : 'ti ti-menu-2'} />
+        </button>
+      </div>
+
+      {/* MOBILE DROPDOWN MENU */}
+      {mobileMenuOpen && (
+        <div className="mobile-dropdown" style={{
+          display: 'none',
+          position: 'fixed', top: '56px', left: 0, right: 0, zIndex: 39,
+          background: '#1C1917', padding: '8px 12px 16px',
+        }}>
+          {navItems.map(item => (
+            <NavLink
+              key={item.to}
+              to={item.to}
+              onClick={() => setMobileMenuOpen(false)}
+              style={({ isActive }) => ({
+                display: 'flex', alignItems: 'center', gap: '10px',
+                padding: '12px 12px', borderRadius: '9px',
+                fontSize: '14px', fontWeight: 500,
+                textDecoration: 'none',
+                background: isActive ? '#2A2520' : 'transparent',
+                color: isActive ? '#E8A87C' : '#8A8580',
+              })}
+            >
+              <i className={`ti ${item.icon}`} style={{ fontSize: '17px', width: '18px' }} />
+              {item.label}
+            </NavLink>
+          ))}
+          <div style={{ height: '1px', background: '#2A2520', margin: '8px 0' }} />
+          <div
+            onClick={handleLogout}
+            style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '12px 12px', cursor: 'pointer', color: '#8A8580', fontSize: '14px' }}
+          >
+            <i className="ti ti-logout" style={{ fontSize: '17px', width: '18px' }} />
+            Sign out
+          </div>
+        </div>
+      )}
+
+      {/* DESKTOP SIDEBAR */}
+      <aside className="desktop-sidebar" style={{
         width: '212px',
         background: '#1C1917',
         display: 'flex',
@@ -31,16 +95,11 @@ export default function Layout({ children }) {
         padding: '22px 12px',
         flexShrink: 0,
       }}>
-
-        {/* Logo */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '9px', padding: '0 8px', marginBottom: '32px' }}>
           <div style={{
-            width: '30px', height: '30px',
-            background: '#D97234',
-            borderRadius: '50%',
+            width: '30px', height: '30px', background: '#D97234', borderRadius: '50%',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '16px', color: '#fff',
-            boxShadow: '0 2px 6px rgba(217,114,52,0.25)',
+            color: '#fff', fontSize: '16px', boxShadow: '0 2px 6px rgba(217,114,52,0.25)',
           }}>
             <i className="ti ti-currency-dollar" />
           </div>
@@ -49,7 +108,6 @@ export default function Layout({ children }) {
           </span>
         </div>
 
-        {/* Nav */}
         <nav style={{ display: 'flex', flexDirection: 'column', gap: '2px', flex: 1 }}>
           {navItems.map(item => (
             <NavLink
@@ -83,11 +141,9 @@ export default function Layout({ children }) {
             </NavLink>
           ))}
         </nav>
-
-        {/* Divider */}
+        
         <div style={{ height: '1px', background: '#2A2520', margin: '8px 0' }} />
 
-        {/* Footer */}
         <div
           onClick={handleLogout}
           style={{
@@ -114,9 +170,34 @@ export default function Layout({ children }) {
         </div>
       </aside>
 
-      <main style={{ flex: 1, overflow: 'auto', background: '#F7F4EE' }}>
+      {/* MAIN CONTENT */}
+      <main className="main-content" style={{ flex: 1, overflow: 'auto', background: '#F7F4EE' }}>
         {children}
       </main>
+
+      {/* MOBILE BOTTOM TAB BAR */}
+      <nav className="mobile-bottom-nav" style={{
+        display: 'none',
+        position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 40,
+        background: '#1C1917', padding: '8px 4px',
+        justifyContent: 'space-around', alignItems: 'center',
+      }}>
+        {navItems.map(item => (
+          <NavLink
+            key={item.to}
+            to={item.to}
+            style={({ isActive }) => ({
+              display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '3px',
+              padding: '4px 8px', borderRadius: '8px',
+              textDecoration: 'none',
+              color: isActive ? '#E8A87C' : '#8A8580',
+            })}
+          >
+            <i className={`ti ${item.icon}`} style={{ fontSize: '19px' }} />
+            <span style={{ fontSize: '10px', fontWeight: 600 }}>{item.label}</span>
+          </NavLink>
+        ))}
+      </nav>
     </div>
   );
 }

@@ -122,7 +122,7 @@ export default function Receipts() {
   }
 
   return (
-    <div style={{ padding: '44px 52px', maxWidth: '780px' }}>
+    <div className="page-container">
 
       {/* Header */}
       <div style={{ marginBottom: '28px' }}>

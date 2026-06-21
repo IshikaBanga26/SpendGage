@@ -98,7 +98,7 @@ export default function Ingredients() {
   );
 
   return (
-    <div style={{ padding: '44px 52px', maxWidth: '780px' }}>
+    <div className="page-container">
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px' }}>
@@ -160,7 +160,7 @@ export default function Ingredients() {
       )}
 
       {/* List */}
-      {filtered.map((ing, i) => {
+      {filtered.map((ing) => {
         const isLow = ing.low_stock_threshold > 0 && ing.stock_qty < ing.low_stock_threshold;
         return (
           <div key={ing.id}>

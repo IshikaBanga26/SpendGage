@@ -165,7 +165,7 @@ export default function Products() {
   const liveCost = calcMaterialCost();
 
   return (
-    <div style={{ padding: '44px 52px', maxWidth: '780px' }}>
+    <div className="page-container">
 
       {/* Header */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '28px' }}>
@@ -347,7 +347,7 @@ export default function Products() {
               {recipe.map((row, idx) => {
                 const selectedIng = ingredients.find(i => i.id === row.ingredient_id);
                 return (
-                  <div key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 140px 32px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
+                  <div className="recipe-row" key={idx} style={{ display: 'grid', gridTemplateColumns: '1fr 140px 32px', gap: '8px', marginBottom: '8px', alignItems: 'center' }}>
                     <select style={inputStyle} value={row.ingredient_id}
                       onChange={e => updateRecipeRow(idx, 'ingredient_id', e.target.value)}>
                       <option value="">Select ingredient</option>

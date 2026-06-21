@@ -79,7 +79,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div style={{ padding: '44px 52px', maxWidth: '780px' }}>
+    <div className="page-container">
 
       {/* Greeting */}
       <div style={{ marginBottom: '24px' }}>
@@ -144,7 +144,7 @@ export default function Dashboard() {
             const color = getMarginColor(margin, threshold);
             return (
               <div key={p.id}>
-                <div className="dash-row" style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px', borderRadius: '12px', cursor: 'pointer', margin: '0 -14px' }}
+                <div className="dash-row" style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '14px', borderRadius: '12px', cursor: 'pointer', margin: '0 -14px', flexWrap: 'wrap' }}
                   onClick={() => navigate('/products')}
                 >
                   <div style={{
