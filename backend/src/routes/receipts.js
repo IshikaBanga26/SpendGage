@@ -130,6 +130,17 @@ router.post('/upload', (req, res, next) => {
         item.item_name.toLowerCase().includes(ing.name.toLowerCase())
       );
 
+      let unitCost = parseFloat(app.unit_price);
+      if (!unitCost || unitCost <= 0) {
+        if (app.total_price && app.quantity && app.quantity > 0) {
+          unitCost = parseFloat(app.total_price) / parseFloat(app.quantity);
+        }
+      }
+      if (!unitCost || unitCost <= 0) {
+        console.warn(`Skipping ${app.item_name} — unit_price is 0`);
+        continue;
+      }
+
       await pool.query(
         `INSERT INTO receipt_items
          (receipt_id, item_name, quantity, unit, total_price, unit_price, matched_ingredient_id)

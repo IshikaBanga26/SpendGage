@@ -44,7 +44,7 @@ Return ONLY a valid JSON object with this exact structure (no markdown, no expla
 Rules:
 - item_name should be clean and searchable e.g. "All-purpose flour" not "FLOUR AP 1KG"
 - If quantity is a weight like 500g, set quantity=500 and unit="g"
-- unit_price = total_price / quantity
+- unit_price MUST be calculated as total_price / quantity — never return 0
 - If you cannot read a value clearly, use null`,
           },
         ],
